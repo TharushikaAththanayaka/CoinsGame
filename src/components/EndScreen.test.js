@@ -13,7 +13,7 @@ describe('EndScreen Component', () => {
 
   test('displays end title', () => {
     render(<EndScreen score={1000} onPlayAgain={mockOnPlayAgain} onGoBack={mockOnGoBack} />);
-    expect(screen.getByText(/Time's Up/i)).toBeInTheDocument();
+    expect(screen.getByText(/Time's Up!/i)).toBeInTheDocument();
   });
 
   test('displays final score', () => {
@@ -73,5 +73,3 @@ describe('EndScreen Component', () => {
     expect(screen.getByText(/5,000/i)).toBeInTheDocument();
   });
 });
-
-

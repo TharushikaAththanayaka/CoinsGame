@@ -23,10 +23,9 @@ describe('Score Component', () => {
     expect(screen.getByText(/Score/i)).toBeInTheDocument();
   });
 
-  test('renders trophy icon', () => {
-    render(<Score score={100} />);
-    // Check if icon exists (could be SVG or icon component)
-    const scoreContainer = screen.getByText(/Score/i).closest('.score-container');
+  test('renders score container', () => {
+    const { container } = render(<Score score={100} />);
+    const scoreContainer = container.querySelector('.score-container');
     expect(scoreContainer).toBeInTheDocument();
   });
 
@@ -36,7 +35,15 @@ describe('Score Component', () => {
     
     rerender(<Score score={250} />);
     expect(screen.getByText(/250/i)).toBeInTheDocument();
+    
+    rerender(<Score score={1000} />);
+    expect(screen.getByText(/1,000/i)).toBeInTheDocument();
+  });
+
+  test('displays score value in correct element', () => {
+    const { container } = render(<Score score={500} />);
+    const scoreValue = container.querySelector('.score-value');
+    expect(scoreValue).toBeInTheDocument();
+    expect(scoreValue).toHaveTextContent('500');
   });
 });
-
-

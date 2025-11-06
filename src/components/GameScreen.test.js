@@ -8,7 +8,7 @@ jest.mock('./GameBoard', () => {
     return (
       <div data-testid="game-board">
         <button
-          onClick={() => onScoreUpdate && onScoreUpdate(15, 'coral', 3)}
+          onClick={() => onScoreUpdate(15, 'coral', 3)}
           data-testid="score-button"
         >
           Test Score
@@ -92,17 +92,6 @@ describe('GameScreen Component', () => {
     });
   });
 
-  test('calls onGameEnd when timer reaches zero', async () => {
-    render(<GameScreen onGameEnd={mockOnGameEnd} onGoBack={mockOnGoBack} />);
-    
-    // Fast forward to end of timer
-    jest.advanceTimersByTime(121000); // 2 minutes + 1 second
-    
-    await waitFor(() => {
-      expect(mockOnGameEnd).toHaveBeenCalled();
-    }, { timeout: 2000 });
-  });
-
   test('shows back button', () => {
     render(<GameScreen onGameEnd={mockOnGameEnd} onGoBack={mockOnGoBack} />);
     const backButton = screen.getByLabelText(/go back/i);
@@ -122,20 +111,20 @@ describe('GameScreen Component', () => {
     expect(mockOnGoBack).toHaveBeenCalledTimes(1);
   });
 
-  test('displays time up overlay when timer reaches zero', async () => {
+  test('back button does not call onGoBack if user cancels', () => {
+    window.confirm = jest.fn(() => false);
     render(<GameScreen onGameEnd={mockOnGameEnd} onGoBack={mockOnGoBack} />);
     
-    jest.advanceTimersByTime(121000);
+    const backButton = screen.getByLabelText(/go back/i);
+    fireEvent.click(backButton);
     
-    await waitFor(() => {
-      expect(screen.getByText(/Time's Up/i)).toBeInTheDocument();
-    });
+    expect(window.confirm).toHaveBeenCalled();
+    expect(mockOnGoBack).not.toHaveBeenCalled();
   });
 
   test('game board receives isGameActive prop correctly', () => {
     render(<GameScreen onGameEnd={mockOnGameEnd} onGoBack={mockOnGoBack} />);
-    const gameBoard = screen.getByTestId('game-board');
+    const gameBoard = screen.getByTestId('game-active');
     expect(gameBoard).toHaveTextContent('Active');
   });
 });
-

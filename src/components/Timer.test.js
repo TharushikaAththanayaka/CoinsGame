@@ -61,6 +61,8 @@ describe('Timer Component', () => {
     
     rerender(<Timer timeRemaining={15} />);
     expect(screen.getByText(/00:15/i)).toBeInTheDocument();
+    
+    rerender(<Timer timeRemaining={119} />);
+    expect(screen.getByText(/01:59/i)).toBeInTheDocument();
   });
 });
-

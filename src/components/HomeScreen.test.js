@@ -14,11 +14,18 @@ describe('HomeScreen Component', () => {
     expect(screen.getByText(/Flower Quest/i)).toBeInTheDocument();
   });
 
-  test('renders instructions', () => {
+  test('renders instructions heading', () => {
     render(<HomeScreen onStart={mockOnStart} />);
     expect(screen.getByText(/How to Play/i)).toBeInTheDocument();
-    expect(screen.getByText(/Swap adjacent flowers/i)).toBeInTheDocument();
-    expect(screen.getByText(/2 minutes/i)).toBeInTheDocument();
+  });
+
+  test('renders all instruction items', () => {
+    render(<HomeScreen onStart={mockOnStart} />);
+    expect(screen.getByText(/Swap adjacent flowers to match 3 or more of the same color/i)).toBeInTheDocument();
+    expect(screen.getByText(/Matches can be horizontal or vertical/i)).toBeInTheDocument();
+    expect(screen.getByText(/Each match scores \+5 points per flower/i)).toBeInTheDocument();
+    expect(screen.getByText(/Chain matches for bonus points/i)).toBeInTheDocument();
+    expect(screen.getByText(/You have 2 minutes to score as many points as possible/i)).toBeInTheDocument();
   });
 
   test('renders start button', () => {
@@ -34,14 +41,4 @@ describe('HomeScreen Component', () => {
     fireEvent.click(startButton);
     expect(mockOnStart).toHaveBeenCalledTimes(1);
   });
-
-  test('has all instruction items', () => {
-    render(<HomeScreen onStart={mockOnStart} />);
-    expect(screen.getByText(/Swap adjacent flowers to match 3 or more/i)).toBeInTheDocument();
-    expect(screen.getByText(/Matches can be horizontal or vertical/i)).toBeInTheDocument();
-    expect(screen.getByText(/Each match scores \+5 points per flower/i)).toBeInTheDocument();
-    expect(screen.getByText(/Chain matches for bonus points/i)).toBeInTheDocument();
-  });
 });
-
-

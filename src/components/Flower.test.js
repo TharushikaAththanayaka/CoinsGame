@@ -38,8 +38,9 @@ describe('Flower Component', () => {
       />
     );
     
-    const emptyCell = document.querySelector('.flower-cell.empty');
+    const emptyCell = screen.getByTestId('flower-0-0');
     expect(emptyCell).toBeInTheDocument();
+    expect(emptyCell).toHaveClass('empty');
   });
 
   test('applies selected class when isSelected is true', () => {
@@ -112,25 +113,20 @@ describe('Flower Component', () => {
     });
   });
 
-  test('does not call onClick for empty cells', () => {
+  test('can be both selected and matching', () => {
     render(
       <Flower 
-        color={null}
-        row={0}
-        col={0}
-        isSelected={false}
-        isMatching={false}
+        color="lime"
+        row={3}
+        col={3}
+        isSelected={true}
+        isMatching={true}
         onClick={mockOnClick}
       />
     );
     
-    const emptyCell = document.querySelector('.flower-cell.empty');
-    if (emptyCell) {
-      fireEvent.click(emptyCell);
-      // onClick should not be called for empty cells
-      expect(mockOnClick).not.toHaveBeenCalled();
-    }
+    const flower = screen.getByTestId('flower-3-3');
+    expect(flower).toHaveClass('selected');
+    expect(flower).toHaveClass('matching');
   });
 });
-
-

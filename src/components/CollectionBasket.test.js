@@ -19,9 +19,10 @@ describe('CollectionBasket Component', () => {
   test('displays all flower types', () => {
     render(<CollectionBasket collectedFlowers={defaultCollectedFlowers} />);
     
-    // All flower colors should be represented
-    const basketItems = screen.getAllByText(/0/);
-    expect(basketItems.length).toBeGreaterThanOrEqual(5);
+    // Check that all 5 colors are rendered
+    const { container } = render(<CollectionBasket collectedFlowers={defaultCollectedFlowers} />);
+    const basketItems = container.querySelectorAll('.basket-item');
+    expect(basketItems.length).toBe(5);
   });
 
   test('displays correct counts for each flower type', () => {
@@ -35,18 +36,18 @@ describe('CollectionBasket Component', () => {
     
     render(<CollectionBasket collectedFlowers={flowers} />);
     
-    expect(screen.getByText(/5/)).toBeInTheDocument();
-    expect(screen.getByText(/3/)).toBeInTheDocument();
-    expect(screen.getByText(/10/)).toBeInTheDocument();
-    expect(screen.getByText(/2/)).toBeInTheDocument();
-    expect(screen.getByText(/7/)).toBeInTheDocument();
+    expect(screen.getByText('5')).toBeInTheDocument();
+    expect(screen.getByText('3')).toBeInTheDocument();
+    expect(screen.getByText('10')).toBeInTheDocument();
+    expect(screen.getByText('2')).toBeInTheDocument();
+    expect(screen.getByText('7')).toBeInTheDocument();
   });
 
   test('displays zero for flower types with no collections', () => {
     render(<CollectionBasket collectedFlowers={defaultCollectedFlowers} />);
     
-    const zeros = screen.getAllByText(/0/);
-    expect(zeros.length).toBeGreaterThanOrEqual(5);
+    const zeros = screen.getAllByText('0');
+    expect(zeros.length).toBe(5);
   });
 
   test('updates counts when flowers are collected', () => {
@@ -64,21 +65,18 @@ describe('CollectionBasket Component', () => {
     
     rerender(<CollectionBasket collectedFlowers={newFlowers} />);
     
-    expect(screen.getByText(/10/)).toBeInTheDocument();
-    expect(screen.getByText(/5/)).toBeInTheDocument();
-    expect(screen.getByText(/15/)).toBeInTheDocument();
-    expect(screen.getByText(/3/)).toBeInTheDocument();
-    expect(screen.getByText(/8/)).toBeInTheDocument();
+    expect(screen.getByText('10')).toBeInTheDocument();
+    expect(screen.getByText('5')).toBeInTheDocument();
+    expect(screen.getByText('15')).toBeInTheDocument();
+    expect(screen.getByText('3')).toBeInTheDocument();
+    expect(screen.getByText('8')).toBeInTheDocument();
   });
 
-  test('renders all 5 flower color categories', () => {
-    render(<CollectionBasket collectedFlowers={defaultCollectedFlowers} />);
-    
-    const basketContainer = screen.getByText(/Collected Flowers/i).closest('.collection-basket');
-    const items = basketContainer?.querySelectorAll('.basket-item');
-    
-    expect(items?.length).toBe(5);
+  test('renders basket container', () => {
+    const { container } = render(
+      <CollectionBasket collectedFlowers={defaultCollectedFlowers} />
+    );
+    const basket = container.querySelector('.collection-basket');
+    expect(basket).toBeInTheDocument();
   });
 });
-
-

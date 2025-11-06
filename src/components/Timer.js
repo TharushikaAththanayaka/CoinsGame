@@ -6,7 +6,7 @@ const Timer = ({ timeRemaining }) => {
   const seconds = timeRemaining % 60;
   const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-  const progress = (timeRemaining / 120) * 100; // 120 = 2 minutes in seconds
+  const progress = (timeRemaining / 120) * 100; 
 
   return (
     <div className="timer-container">
