@@ -17,9 +17,6 @@ describe('CollectionBasket Component', () => {
   });
 
   test('displays all flower types', () => {
-    render(<CollectionBasket collectedFlowers={defaultCollectedFlowers} />);
-    
-    // Check that all 5 colors are rendered
     const { container } = render(<CollectionBasket collectedFlowers={defaultCollectedFlowers} />);
     const basketItems = container.querySelectorAll('.basket-item');
     expect(basketItems.length).toBe(5);

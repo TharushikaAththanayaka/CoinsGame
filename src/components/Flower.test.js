@@ -9,6 +9,10 @@ describe('Flower Component', () => {
     mockOnClick.mockClear();
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('renders flower with color', () => {
     render(
       <Flower 

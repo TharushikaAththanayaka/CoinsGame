@@ -38,6 +38,10 @@ jest.mock('./components/EndScreen', () => {
 });
 
 describe('App Component', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('renders home screen initially', () => {
     render(<App />);
     expect(screen.getByTestId('home-screen')).toBeInTheDocument();

@@ -11,6 +11,10 @@ describe('EndScreen Component', () => {
     mockOnGoBack.mockClear();
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('displays end title', () => {
     render(<EndScreen score={1000} onPlayAgain={mockOnPlayAgain} onGoBack={mockOnGoBack} />);
     expect(screen.getByText(/Time's Up!/i)).toBeInTheDocument();

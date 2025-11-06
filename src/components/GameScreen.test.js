@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
 import GameScreen from './GameScreen';
 
 // Mock child components to avoid complex dependencies
@@ -42,14 +42,19 @@ describe('GameScreen Component', () => {
   const mockOnGoBack = jest.fn();
 
   beforeEach(() => {
+    jest.clearAllTimers();
     jest.useFakeTimers();
     mockOnGameEnd.mockClear();
     mockOnGoBack.mockClear();
+    window.confirm = jest.fn(() => true);
   });
 
   afterEach(() => {
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     jest.useRealTimers();
+    jest.clearAllMocks();
   });
 
   test('renders game board and components', () => {
@@ -75,7 +80,10 @@ describe('GameScreen Component', () => {
     render(<GameScreen onGameEnd={mockOnGameEnd} onGoBack={mockOnGoBack} />);
     const scoreButton = screen.getByTestId('score-button');
     
-    fireEvent.click(scoreButton);
+    act(() => {
+      fireEvent.click(scoreButton);
+    });
+    
     expect(screen.getByTestId('score')).toHaveTextContent('Score: 15');
   });
 
@@ -84,12 +92,13 @@ describe('GameScreen Component', () => {
     
     expect(screen.getByTestId('timer')).toHaveTextContent('Time: 120');
     
-    // Advance timer by 1 second
-    jest.advanceTimersByTime(1000);
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
     
     await waitFor(() => {
       expect(screen.getByTestId('timer')).toHaveTextContent('Time: 119');
-    });
+    }, { timeout: 1000 });
   });
 
   test('shows back button', () => {
@@ -103,7 +112,10 @@ describe('GameScreen Component', () => {
     render(<GameScreen onGameEnd={mockOnGameEnd} onGoBack={mockOnGoBack} />);
     
     const backButton = screen.getByLabelText(/go back/i);
-    fireEvent.click(backButton);
+    
+    act(() => {
+      fireEvent.click(backButton);
+    });
     
     expect(window.confirm).toHaveBeenCalledWith(
       expect.stringContaining('Are you sure')
@@ -116,7 +128,10 @@ describe('GameScreen Component', () => {
     render(<GameScreen onGameEnd={mockOnGameEnd} onGoBack={mockOnGoBack} />);
     
     const backButton = screen.getByLabelText(/go back/i);
-    fireEvent.click(backButton);
+    
+    act(() => {
+      fireEvent.click(backButton);
+    });
     
     expect(window.confirm).toHaveBeenCalled();
     expect(mockOnGoBack).not.toHaveBeenCalled();

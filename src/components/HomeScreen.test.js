@@ -9,6 +9,10 @@ describe('HomeScreen Component', () => {
     mockOnStart.mockClear();
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('renders game title', () => {
     render(<HomeScreen onStart={mockOnStart} />);
     expect(screen.getByText(/Flower Quest/i)).toBeInTheDocument();
